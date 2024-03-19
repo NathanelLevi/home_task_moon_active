@@ -6,6 +6,8 @@ on:
       service_name:
         description: 'Service Name'
         required: true
+        type: choice
+        options: [ "even", "odd" ]
 
 jobs:
   deploy:
