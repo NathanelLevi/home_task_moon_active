@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: "{{ .Release.Name }}"
-        image: "freshkorabs/ma-app:latest"
+        image: "freshkorabs/ma-app:{{ .Values.tag }}"
         ports:
         - name: app-port
           containerPort: 5000

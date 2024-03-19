@@ -1,0 +1,41 @@
+name: Manual Deployment Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      service_name:
+        description: 'Service Name'
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v2
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: freshkorabs #my registry
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build Docker image
+      #Assuming that I have the secret with my token
+      run: |
+        docker buildx build --platform linux/arm64/v8 -t freshkorabs/ma-app:${{ github.run_number } .
+        docker push freshkorabs/ma-app:${{ github.run_number }}
+
+    - name: Deploy Helm
+      uses: WyriHaximus/github-action-helm3@v3
+      with:
+        exec: helm upgrade ${{ github.event.inputs.service_name }} ./helm --install --wait --atomic --set path=${{ github.event.inputs.service_name }}number --set tag=${{ github.run_number }}
+        kubeconfig: '${{ secrets.KUBECONFIG }}' #Assuming that I have the secret with my KUBECONFIG
+        overrule_existing_kubeconfig: "true"
+
+    - name: Run tests
+      run: |
+        # Run tests against the deployed service
+        curl http://${{ github.event.inputs.service_name }}.int.com/${{ github.event.inputs.service_name }}number
+        curl http://<deployment-name>.<namespace>.svc.cluster.local/ready

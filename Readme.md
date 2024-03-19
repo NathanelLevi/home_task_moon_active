@@ -33,8 +33,11 @@ docker push freshkorabs/ma-app:latest
 
 These are the commands for deploying the helm charts :
 ```
-
-
+oddnumber:
+    helm upgrade odd helm --set path=oddnumber --install
+ 
+evennumber:
+    helm upgrade odd helm --set path=evennumber --install
 ```
 
 1. minikube start --kubernetes-version=v1.28.3
