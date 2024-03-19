@@ -25,6 +25,7 @@ In the root dir:
 
 ## To test task 5:
 I've used minikube, and it didn't work well, but it will work well with a managed K8S cluster 
+
 1st, I need to build a docker image and push to registry, in my case it's my registry.
 ```
 docker buildx build --platform linux/arm64/v8 -t freshkorabs/ma-app .
