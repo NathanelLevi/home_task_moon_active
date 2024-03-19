@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name }}"
+  labels:
+    app: "{{ .Release.Name }}"
+  namespace: ma-task
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}"
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: "{{ .Release.Name }}"
+        image: "freshkorabs/ma-app:latest"
+        ports:
+        - name: app-port
+          containerPort: 5000
+          protocol: TCP

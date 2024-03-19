@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "{{ .Release.Name }}"
+  namespace: ma-task
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: {{ .Release.Name }}.int.com
+      http:
+        paths:
+          - path: "/{{ .Values.path }}"
+            pathType: Exact
+            backend:
+              service:
+                name: "{{ .Release.Name }}"
+                port:
+                  number: 80
+          - path: /ready
+            pathType: Exact
+            backend:
+              service:
+                name: "{{ .Release.Name }}"
+                port:
+                  number: 80
