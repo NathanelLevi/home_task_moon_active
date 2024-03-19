@@ -39,8 +39,3 @@ oddnumber:
 evennumber:
     helm upgrade odd helm --set path=evennumber --install
 ```
-
-1. minikube start --kubernetes-version=v1.28.3
-2. minikube update-context
-3. minikube addons enable ingress
-4. 
